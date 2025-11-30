@@ -234,8 +234,8 @@ function editarTrem(trem) {
   const nome = prompt("Novo nome do trem:", trem.textContent);
   if (nome) trem.textContent = nome;
 
-  const estado = prompt("Estado do trem: verde, amarelo ou vermelho?", "verde");
-  if (estado && ["verde", "amarelo", "vermelho"].includes(estado)) {
+  const estado = prompt("Estado do trem: amarelo ou vermelho?", "");
+  if (estado && ["amarelo", "vermelho"].includes(estado)) {
     trem.className = "trem " + estado;
   }
 
@@ -324,4 +324,5 @@ carregar(); // inicializa
 
 </body>
 </html>
+
 
