@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Dominio VOL - OSA</title>
+
+<style>
+  body {
+    font-family: Arial;
+    padding: 20px;
+    background: #eef2f4;
+  }
+
+  h2 { margin-bottom: 10px; }
+
+  /* Linha ferroviária */
+  .linha {
+    background: #0b587a;
+    height: 45px;
+    width: 100%;
+    border-radius: 6px;
+    margin-bottom: 70px;
+    position: relative;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-weight: bold;
+  }
+
+  /* Estações */
+  .estacoes {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 10px 6px 10px;
+  }
+  .estacao {
+    background: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 2px solid #0b587a;
+    font-weight: bold;
+    width: 50px;
+    text-align: center;
+    color: #0b587a;
+  }
+
+  /* Trem */
+  .trem {
+    width: 90px;
+    height: 32px;
+    background: #d9534f;
+    color: white;
+    position: absolute;
+    top: 6px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    transition: left 0.15s linear; /* animação suave */
+    font-weight: bold;
+  }
+
+  /* Painel de sinalização */
+  .trem.verde { background: #28a745; }
+  .trem.amarelo { background: #f0ad4e; }
+  .trem.vermelho { background: #d9534f; }
+
+  /* Área de eventos */
+  #eventos {
+    background: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 20px;
+    height: 200px;
+    overflow-y: auto;
+    border: 1px solid #bbb;
+  }
+
+  #eventos div {
+    font-size: 14px;
+    padding: 3px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  button {
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>VOL - OSA</h2>
+<h2></h2>
+
+
+
+<!-- ESTAÇÕES VIA 1 -->
+<div class="estacoes">
+  <div class="estacao">VOL</div><div class="estacao">CJD</div><div class="estacao">HBR</div>
+  <div class="estacao">PIN</div><div class="estacao">USP</div><div class="estacao">JAG</div>
+  <div class="estacao">CEA</div><div class="estacao">PAL</div><div class="estacao">OSA</div>
+  
+  
+</div>
+<div id="via1" class="linha">VIA 1</div>
+
+
+
+<!-- ESTAÇÕES VIA 2 -->
+<div class="estacoes" style="margin-top:40px;">
+  <div class="estacao">VOL</div><div class="estacao">CJD</div><div class="estacao">HBR</div>
+  <div class="estacao">PIN</div><div class="estacao">USP</div><div class="estacao">JAG</div>
+  <div class="estacao">CEA</div><div class="estacao">PAL</div><div class="estacao">OSA</div>
+  
+</div>
+<div id="via2" class="linha">VIA 2</div>
+
+
+<button onclick="criarTrem(1)">Adicionar Trem na Via 1</button>
+<button onclick="criarTrem(2)">Adicionar Trem na Via 2</button>
+<button onclick="limparTudo()">Limpar Tudo</button>
+<button onclick="removerTrem()">Remover Trem</button>
+
+
+<h3>Historico</h3>
+<div id="eventos"></div>
+
+<script>
+let contador = 1;
+let tremAtivo = null;
+let offsetX = 0;
+
+/* ------- SISTEMA DE EVENTOS -------- */
+function registrarEvento(texto) {
+  const box = document.getElementById("eventos");
+  const linha = document.createElement("div");
+  linha.textContent = new Date().toLocaleTimeString() + " → " + texto;
+  box.prepend(linha);
+}
+
+/* ------- CRIAR TREM -------- */
+function criarTrem(viaEscolhida) {
+  const via = document.getElementById(viaEscolhida === 1 ? "via1" : "via2");
+
+  const trem = document.createElement("div");
+  trem.className = "trem vermelho"; // começa vermelho (ok)
+  trem.textContent = "UC" + contador;
+
+  trem.style.left = "10px";
+
+  via.appendChild(trem);
+  ativarEventosTrem(trem);
+
+  salvar();
+  registrarEvento(`Trem ${trem.textContent} criado na Via ${viaEscolhida}`);
+
+  contador++;
+}
+
+function removerTrem() {
+  const trens = Array.from(document.querySelectorAll(".trem"));
+
+  if (trens.length === 0) {
+    alert("Não há trens para remover.");
+    return;
+  }
+
+  const nomes = trens.map(t => t.textContent);
+  const escolha = prompt("Digite o nome do trem para remover:\n" + nomes.join(", "));
+
+  if (!escolha) return;
+
+  const tremSelecionado = trens.find(t => t.textContent === escolha);
+
+  if (!tremSelecionado) {
+    alert("Trem não encontrado.");
+    return;
+  }
+
+  tremSelecionado.remove();
+  registrarEvento(`Trem ${escolha} removido`);
+  salvar();
+}
+
+
+/* ------- EVENTOS DO TREM (clique, arrastar, editar) -------- */
+function ativarEventosTrem(trem) {
+  trem.addEventListener("mousedown", e => iniciarArrasto(e, trem));
+
+  trem.addEventListener("dblclick", () => editarTrem(trem));
+}
+
+/* ------- EDITAR TREM -------- */
+function editarTrem(trem) {
+  const nome = prompt("Novo nome do trem:", trem.textContent);
+  if (nome) trem.textContent = nome;
+
+  const estado = prompt("Estado do trem: verde, amarelo ou vermelho?", "verde");
+  if (estado && ["verde", "amarelo", "vermelho"].includes(estado)) {
+    trem.className = "trem " + estado;
+  }
+
+  registrarEvento(`Trem ${trem.textContent} atualizado (${trem.className.replace("trem ","")})`);
+
+  salvar();
+}
+
+/* ------- ARRASTAR -------- */
+function iniciarArrasto(e, trem) {
+  tremAtivo = trem;
+  offsetX = e.clientX - trem.offsetLeft;
+
+  document.addEventListener("mousemove", arrastar);
+  document.addEventListener("mouseup", soltar);
+}
+
+function arrastar(e) {
+  if (!tremAtivo) return;
+
+  const via = tremAtivo.parentElement;
+  const limite = via.clientWidth - 95;
+
+  let novaPos = e.clientX - offsetX;
+
+  if (novaPos < 0) novaPos = 0;
+  if (novaPos > limite) novaPos = limite;
+
+  tremAtivo.style.left = novaPos + "px";
+}
+
+function soltar() {
+  if (tremAtivo) registrarEvento(`Trem ${tremAtivo.textContent} movido`);
+  document.removeEventListener("mousemove", arrastar);
+  document.removeEventListener("mouseup", soltar);
+
+  salvar();
+  tremAtivo = null;
+}
+
+/* ------- SALVAR NO LOCAL STORAGE -------- */
+function salvar() {
+  const dados = [];
+  document.querySelectorAll(".trem").forEach(t => {
+    dados.push({
+      nome: t.textContent,
+      estado: t.className.replace("trem ", ""),
+      left: t.style.left,
+      via: t.parentElement.id
+    });
+  });
+
+  localStorage.setItem("ferrorama", JSON.stringify(dados));
+}
+
+/* ------- CARREGAR -------- */
+function carregar() {
+  const dados = JSON.parse(localStorage.getItem("ferrorama"));
+  if (!dados) return;
+
+  dados.forEach(d => {
+    const via = document.getElementById(d.via);
+    const trem = document.createElement("div");
+
+    trem.className = "trem " + d.estado;
+    trem.textContent = d.nome;
+    trem.style.left = d.left;
+
+    via.appendChild(trem);
+    ativarEventosTrem(trem);
+  });
+
+  registrarEvento("Sistema carregado do localStorage");
+}
+
+/* ------- LIMPAR TUDO -------- */
+function limparTudo() {
+  localStorage.removeItem("ferrorama");
+  document.querySelectorAll(".trem").forEach(t => t.remove());
+  registrarEvento("Todos os trens foram removidos");
+}
+
+carregar(); // inicializa
+
+</script>
+
+</body>
+</html>
