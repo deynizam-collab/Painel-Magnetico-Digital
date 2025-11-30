@@ -138,6 +138,11 @@
 <h3>Historico</h3>
 <div id="eventos"></div>
 
+  <div class="legenda">
+  <div><span class="cor vermelha"></span> NORMAL</div>
+  <div><span class="cor amarela"></span> ATC ISOLADO</div>
+</div>
+
 <script>
 let contador = 1;
 let tremAtivo = null;
@@ -293,8 +298,36 @@ function limparTudo() {
 }
 
 carregar(); // inicializa
+/* LEGENDA */
+.legenda {
+  margin-top: 15px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  width: 260px;
+  font-weight: bold;
+}
+
+.legenda div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.legenda .cor {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+.cor.vermelha { background: #d9534f; }
+.cor.amarela { background: #f0ad4e; }
 
 </script>
 
 </body>
 </html>
+
