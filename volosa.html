@@ -90,6 +90,34 @@
     cursor: pointer;
     font-weight: bold;
   }
+  /* LEGENDA */
+.legenda {
+  margin-top: 15px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  width: 260px;
+  font-weight: bold;
+}
+
+.legenda div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.legenda .cor {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+.cor.vermelha { background: #d9534f; }
+.cor.amarela { background: #f0ad4e; }
+
 </style>
 </head>
 
@@ -126,6 +154,11 @@
 <button onclick="criarTrem(2)">Adicionar Trem na Via 2</button>
 <button onclick="limparTudo()">Limpar Tudo</button>
 <button onclick="removerTrem()">Remover Trem</button>
+  
+<div class="legenda">
+  <div><span class="cor vermelha"></span> NORMAL</div>
+  <div><span class="cor amarela"></span> ATC ISOLADO</div>
+</div>
 
 
 <h3>Historico</h3>
@@ -291,3 +324,4 @@ carregar(); // inicializa
 
 </body>
 </html>
+
