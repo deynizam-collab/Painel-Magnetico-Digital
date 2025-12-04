@@ -98,6 +98,25 @@
     margin-bottom: 25px;
   }
 
+  /* 🔵 ÁREA COM O FUNDO */
+  .dashboard-wrapper {
+    
+    padding: 40px;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .dashboard-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("img/image.webp") center/cover no-repeat;
+    opacity: 0.35;
+    filter: blur(1px);
+    z-index: -1;
+    border-radius: 20px;
+  }
+
   /* 🔵 CARDS DO DASHBOARD */
   .dashboard {
     display: grid;
@@ -128,7 +147,6 @@
     margin-bottom: 12px;
     display: block;
     color: #0b587a;
-
     animation: flutuar 2.3s ease-in-out infinite;
   }
 
@@ -137,29 +155,6 @@
     50% { transform: translateY(-6px); }
     100% { transform: translateY(0px); }
   }
-<style>
-  /* ... seu CSS atual ... */
-
-  .dashboard {
-    position: relative;
-    padding: 40px;
-  }
-
-  .dashboard::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url("/img/image.webp") no-repeat center center;
-    background-size: cover;
-    opacity: 0.35;
-    border-radius: 20px;
-    z-index: -1;
-    filter: blur(1px);
-  }
-</style>
 
 </style>
 </head>
@@ -192,33 +187,35 @@
 
 </div>
 
-
-</div>
-
 <!-- 🔵 ÁREA PRINCIPAL -->
 <div class="content">
   <h1>Centro de Controle Operacional</h1>
 
-  <div class="dashboard">
+  <!-- 🔵 ÁREA COM O FUNDO AO CENTRO -->
+  <div class="dashboard-wrapper">
 
-    <div class="card" onclick="window.open('linha9.html', '_blank')">
-      <i class="bi bi-train-front"></i>
-      LINHA 9
-    </div>
+      <div class="dashboard">
 
-    <div class="card" onclick="window.open('vagbrr.html', '_blank')">
-      <i class="bi bi-train-front"></i>
-      VAG - BRR
-    </div>
+        <div class="card" onclick="window.open('linha9.html', '_blank')">
+          <i class="bi bi-train-front"></i>
+          LINHA 9
+        </div>
 
-    <div class="card" onclick="window.open('volosa.html', '_blank')">
-      <i class="bi bi-train-front"></i>
-      VOL - OSA
-    </div>
+        <div class="card" onclick="window.open('vagbrr.html', '_blank')">
+          <i class="bi bi-train-front"></i>
+          VAG - BRR
+        </div>
+
+        <div class="card" onclick="window.open('volosa.html', '_blank')">
+          <i class="bi bi-train-front"></i>
+          VOL - OSA
+        </div>
+
+      </div>
 
   </div>
-</div>
 
+</div>
 
 <script>
   // 🔵 Remove o loading depois de 1 segundo
@@ -231,13 +228,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
