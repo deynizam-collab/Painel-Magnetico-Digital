@@ -322,9 +322,21 @@ function ativarEventosTrem(trem) {
 
 let tremSelecionado = null;
 
-/* ------- EDITAR TREM -------- */
+/* ------- EDITAR TREM (NOME + ESTADO) -------- */
 function editarTrem(trem) {
-  tremSelecionado = trem; // guarda qual trem está sendo editado
+
+  // 1️⃣ Primeiro: editar o nome
+  const nomeAtual = trem.textContent.trim();
+  const novoNome = prompt("Digite o número/nome do trem:", nomeAtual);
+
+  if (novoNome && novoNome.trim() !== "") {
+    trem.textContent = novoNome.trim();
+  }
+
+  // Guarda qual trem será editado na mudança de cor
+  tremSelecionado = trem;
+
+  // 2️⃣ Depois: abre o modal para escolher NORMAL ou ATC ISOLADO
   document.getElementById("modalEstado").style.display = "flex";
 }
 
@@ -341,7 +353,7 @@ function setEstadoTrem(estado) {
   // Remove estados antigos
   tremSelecionado.classList.remove("normal", "atc");
 
-  // Aplica o novo estado
+  // Aplica o novo
   if (estado === "normal") {
     tremSelecionado.classList.add("normal");
   } else if (estado === "atc") {
@@ -353,8 +365,6 @@ function setEstadoTrem(estado) {
   salvar();
   fecharModal();
 }
-
-
 
 /* ------- ARRASTAR -------- */
 function iniciarArrasto(e, trem) {
@@ -401,7 +411,7 @@ function salvar() {
   });
 
   localStorage.setItem("ferrorama", JSON.stringify(dados));
-}//
+}
 
 /* ------- CARREGAR -------- */
 function carregar() {
@@ -436,3 +446,4 @@ carregar(); // inicializa
 
 </body>
 </html>
+
