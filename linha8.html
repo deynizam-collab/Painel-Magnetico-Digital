@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Linha 8</title>
+
+<style>
+  body {
+    font-family: Arial;
+    padding: 20px;
+    background: #eef2f4;
+  }
+
+  h2 { margin-bottom: 10px; }
+
+  /* Linha ferroviária */
+  .linha {
+    background: #5a6164;
+    height: 45px;
+    width: 100%;
+    border-radius: 6px;
+    margin-bottom: 70px;
+    position: relative;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-weight: bold;
+  }
+
+  /* Estações */
+  .estacoes {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 10px 6px 10px;
+  }
+  .estacao {
+    background: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 2px solid #5a6164;
+    font-weight: bold;
+    width: 50px;
+    text-align: center;
+    color: #5a6164;
+  }
+
+  /* Trem */
+  .trem {
+    width: 70px;
+    height: 32px;
+    background: #d9534f;
+    color: white;
+    position: absolute;
+    top: 6px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    transition: left 0.15s linear; /* animação suave */
+    font-weight: bold;
+  }
+
+  /* Painel de sinalização */
+  .trem.verde { background: #28a745; }
+  .trem.amarelo { background: #f0ad4e; }
+  .trem.vermelho { background: #d9534f; }
+
+  /* Área de eventos */
+  #eventos {
+    background: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 20px;
+    height: 200px;
+    overflow-y: auto;
+    border: 1px solid #bbb;
+  }
+
+  #eventos div {
+    font-size: 14px;
+    padding: 3px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  button {
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  /* 🔵 MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(3px);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  width: 320px;
+  border-radius: 18px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  text-align: center;
+  animation: aparecer .25s ease-out;
+}
+
+@keyframes aparecer {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* 🔘 Botões */
+.modal-content button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  border: none;
+  font-size: 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+/* 🔴 NORMAL → vermelho */
+.btn-normal {
+  background: #d62828;
+  color: white;
+}
+.btn-normal:hover {
+  filter: brightness(1.2);
+}
+
+/* 🟡 ATC ISOLADO → amarelo */
+.btn-atc {
+  background: #ffcc00;
+  color: #000;
+}
+.btn-atc:hover {
+  filter: brightness(1.15);
+}
+
+/* Cinza cancelar */
+.btn-cancelar {
+  background: #ccc;
+}
+.btn-cancelar:hover {
+  background: #b9b9b9;
+}
+
+/* 🔵 Cores dos trens */
+.trem.normal {
+  background: #d62828 !important; /* vermelho */
+}
+
+.trem.atc {
+  background: #ffcc00 !important; /* amarelo */
+}
+
+</style>
+</head>
+
+<!-- 🔵 MODAL DE ESTADO DO TREM -->
+<div id="modalEstado" class="modal">
+  <div class="modal-content">
+    <h2>Selecionar Estado do Trem</h2>
+
+    <button class="btn-normal" onclick="setEstadoTrem('normal')">
+      NORMAL
+    </button>
+
+    <button class="btn-atc" onclick="setEstadoTrem('atc')">
+      ATC ISOLADO
+    </button>
+
+    <button class="btn-cancelar" onclick="fecharModal()">
+      Cancelar
+    </button>
+  </div>
+</div>
+
+<body>
+
+<h2>LINHA 8</h2>
+<h2></h2>
+
+
+
+<!-- ESTAÇÕES VIA 1 -->
+<div class="estacoes">
+  <div class="estacao">JPR</div><div class="estacao">BFU</div><div class="estacao">LAB</div>
+  <div class="estacao">DMO</div><div class="estacao">ILE</div><div class="estacao">PAL</div>
+  <div class="estacao">OSA</div><div class="estacao">CSA</div><div class="estacao">QTU</div>
+  <div class="estacao">GMC</div><div class="estacao">CPB</div><div class="estacao">STE</div>
+  <div class="estacao">AJO</div><div class="estacao">BRU</div><div class="estacao">JBE</div>
+  <div class="estacao">JSI</div><div class="estacao">JDI</div><div class="estacao">SCO</div>
+  <div class="estacao">ECD</div><div class="estacao">IPV</div>
+  
+</div>
+<div id="via1" class="linha">VIA 2</div>
+
+
+
+<!-- ESTAÇÕES VIA 2 -->
+<div class="estacoes" style="margin-top:40px;">
+  <div class="estacao">JPR</div><div class="estacao">BFU</div><div class="estacao">LAB</div>
+  <div class="estacao">DMO</div><div class="estacao">ILE</div><div class="estacao">PAL</div>
+  <div class="estacao">OSA</div><div class="estacao">CSA</div><div class="estacao">QTU</div>
+  <div class="estacao">GMC</div><div class="estacao">CPB</div><div class="estacao">STE</div>
+  <div class="estacao">AJO</div><div class="estacao">BRU</div><div class="estacao">JBE</div>
+  <div class="estacao">JSI</div><div class="estacao">JDI</div><div class="estacao">SCO</div>
+  <div class="estacao">ECD</div><div class="estacao">IPV</div>
+  
+</div>
+<div id="via2" class="linha">VIA 1</div>
+
+
+<button onclick="criarTrem(2)">Adicionar Trem na Via 1</button>
+<button onclick="criarTrem(1)">Adicionar Trem na Via 2</button>
+<button onclick="limparTudo()">Limpar Tudo</button>
+<button onclick="removerTrem()">Remover Trem</button>
+
+
+
+<h3>Historico</h3>
+
+<div id="eventos"></div>
+<H1></H1>
+<!-- 🔵 LEGENDA -->
+<div style="
+    margin-bottom: 20px; 
+    padding: 10px; 
+    background: white; 
+    border-radius: 8px; 
+    width: 320px; 
+    border: 2px solid #0b587a;
+">
+  <strong>LEGENDA</strong><br><br>
+  <div style="display:flex; align-items:center; gap:8px;">
+    <div style="width:24px; height:24px; background:#d62828; border-radius:4px;"></div>
+    <span>Vermelho - NORMAL</span>
+  </div>
+  <div style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+    <div style="width:24px; height:24px; background:#ffcc00; border-radius:4px;"></div>
+    <span>Amarelo - ATC ISOLADO</span>
+  </div>
+</div>
+
+<script>
+let contador = 1;
+let tremAtivo = null;
+let offsetX = 0;
+
+/* ------- SISTEMA DE EVENTOS -------- */
+function registrarEvento(texto) {
+  const box = document.getElementById("eventos");
+  const linha = document.createElement("div");
+  linha.textContent = new Date().toLocaleTimeString() + " → " + texto;
+  box.prepend(linha);
+}
+
+/* ------- CRIAR TREM -------- */
+function criarTrem(viaEscolhida) {
+  const via = document.getElementById(viaEscolhida === 1 ? "via1" : "via2");
+
+  const trem = document.createElement("div");
+  trem.className = "trem vermelho"; // começa vermelho (ok)
+  trem.textContent = "UB" + contador;
+
+  trem.style.left = "10px";
+
+  via.appendChild(trem);
+  ativarEventosTrem(trem);
+
+  salvar();
+  registrarEvento(`Trem ${trem.textContent} criado na Via ${viaEscolhida}`);
+
+  contador++;
+}
+
+function removerTrem() {
+  const trens = Array.from(document.querySelectorAll(".trem"));
+
+  if (trens.length === 0) {
+    alert("Não há trens para remover.");
+    return;
+  }
+
+  const nomes = trens.map(t => t.textContent);
+  const escolha = prompt("Digite o nome do trem para remover:\n" + nomes.join(", "));
+
+  if (!escolha) return;
+
+  const tremSelecionado = trens.find(t => t.textContent === escolha);
+
+  if (!tremSelecionado) {
+    alert("Trem não encontrado.");
+    return;
+  }
+
+  tremSelecionado.remove();
+  registrarEvento(`Trem ${escolha} removido`);
+  salvar();
+}
+
+
+/* ------- EVENTOS DO TREM (clique, arrastar, editar) -------- */
+function ativarEventosTrem(trem) {
+  trem.addEventListener("mousedown", e => iniciarArrasto(e, trem));
+
+  trem.addEventListener("dblclick", () => editarTrem(trem));
+}
+
+let tremSelecionado = null;
+
+/* ------- EDITAR TREM (NOME + ESTADO) -------- */
+function editarTrem(trem) {
+
+  // 1️⃣ Primeiro: editar o nome
+  const nomeAtual = trem.textContent.trim();
+  const novoNome = prompt("Digite o número/nome do trem:", nomeAtual);
+
+  if (novoNome && novoNome.trim() !== "") {
+    trem.textContent = novoNome.trim();
+  }
+
+  // Guarda qual trem será editado na mudança de cor
+  tremSelecionado = trem;
+
+  // 2️⃣ Depois: abre o modal para escolher NORMAL ou ATC ISOLADO
+  document.getElementById("modalEstado").style.display = "flex";
+}
+
+/* ------- FECHAR MODAL ------- */
+function fecharModal() {
+  document.getElementById("modalEstado").style.display = "none";
+  tremSelecionado = null;
+}
+
+/* ------- ALTERAR ESTADO DO TREM ------- */
+function setEstadoTrem(estado) {
+  if (!tremSelecionado) return;
+
+  // Remove estados antigos
+  tremSelecionado.classList.remove("normal", "atc");
+
+  // Aplica o novo
+  if (estado === "normal") {
+    tremSelecionado.classList.add("normal");
+  } else if (estado === "atc") {
+    tremSelecionado.classList.add("atc");
+  }
+
+  registrarEvento(`Trem ${tremSelecionado.textContent} atualizado (${estado})`);
+
+  salvar();
+  fecharModal();
+}
+
+/* ------- ARRASTAR -------- */
+function iniciarArrasto(e, trem) {
+  e.preventDefault(); // evita seleção de texto
+
+  tremAtivo = trem;
+  offsetX = e.clientX - trem.offsetLeft;
+
+  document.addEventListener("mousemove", arrastar);
+  document.addEventListener("mouseup", soltar);
+}
+
+/* ------- ARRASTAR (TOUCH) -------- */
+function iniciarArrastoTouch(e, trem) {
+  e.preventDefault(); // evita scroll
+
+  tremAtivo = trem;
+  offsetX = e.touches[0].clientX - trem.offsetLeft;
+
+  document.addEventListener("touchmove", arrastarTouch);
+  document.addEventListener("touchend", soltarTouch);
+}
+
+function calcularLimites(via) {
+  const trens = [...via.querySelectorAll(".trem")];
+  const larguraTrem = tremAtivo.offsetWidth;
+
+  let limiteMin = 0;
+  let limiteMax = via.clientWidth - larguraTrem;
+
+  trens.forEach(trem => {
+    if (trem === tremAtivo) return;
+
+    const pos = trem.offsetLeft;
+
+    // trem à esquerda
+    if (pos < tremAtivo.offsetLeft) {
+      limiteMin = Math.max(limiteMin, pos + trem.offsetWidth);
+    }
+
+    // trem à direita
+    if (pos > tremAtivo.offsetLeft) {
+      limiteMax = Math.min(limiteMax, pos - larguraTrem);
+    }
+  });
+
+  return { limiteMin, limiteMax };
+}
+
+function arrastar(e) {
+  if (!tremAtivo) return;
+
+  const via = tremAtivo.parentElement;
+  const { limiteMin, limiteMax } = calcularLimites(via);
+
+  let novaPos = e.clientX - offsetX;
+
+  if (novaPos < limiteMin) novaPos = limiteMin;
+  if (novaPos > limiteMax) novaPos = limiteMax;
+
+  tremAtivo.style.left = novaPos + "px";
+}
+
+function arrastarTouch(e) {
+  if (!tremAtivo) return;
+
+  const via = tremAtivo.parentElement;
+  const { limiteMin, limiteMax } = calcularLimites(via);
+
+  let novaPos = e.touches[0].clientX - offsetX;
+
+  if (novaPos < limiteMin) novaPos = limiteMin;
+  if (novaPos > limiteMax) novaPos = limiteMax;
+
+  tremAtivo.style.left = novaPos + "px";
+}
+
+function soltar() {
+  if (tremAtivo) registrarEvento(`Trem ${tremAtivo.textContent} movido`);
+
+  document.removeEventListener("mousemove", arrastar);
+  document.removeEventListener("mouseup", soltar);
+
+  salvar();
+  tremAtivo = null;
+}
+
+function soltarTouch() {
+  if (tremAtivo) registrarEvento(`Trem ${tremAtivo.textContent} movido`);
+
+  document.removeEventListener("touchmove", arrastarTouch);
+  document.removeEventListener("touchend", soltarTouch);
+
+  salvar();
+  tremAtivo = null;
+}
+
+
+
+/* ------- SALVAR NO LOCAL STORAGE -------- */
+function salvar() {
+  const dados = [];
+  document.querySelectorAll(".trem").forEach(t => {
+    dados.push({
+      nome: t.textContent,
+      estado: t.className.replace("trem ", ""),
+      left: t.style.left,
+      via: t.parentElement.id
+    });
+  });
+
+  localStorage.setItem("ferrorama", JSON.stringify(dados));
+}
+
+/* ------- CARREGAR -------- */
+function carregar() {
+  const dados = JSON.parse(localStorage.getItem("ferrorama"));
+  if (!dados) return;
+
+  dados.forEach(d => {
+    const via = document.getElementById(d.via);
+    const trem = document.createElement("div");
+
+    trem.className = "trem " + d.estado;
+    trem.textContent = d.nome;
+    trem.style.left = d.left;
+
+    via.appendChild(trem);
+    ativarEventosTrem(trem);
+  });
+
+  registrarEvento("Sistema carregado do localStorage");
+}
+
+/* ------- LIMPAR TUDO -------- */
+function limparTudo() {
+  localStorage.removeItem("ferrorama");
+  document.querySelectorAll(".trem").forEach(t => t.remove());
+  registrarEvento("Todos os trens foram removidos");
+}
+
+carregar(); // inicializa
+
+</script>
+
+</body>
+</html>
+
