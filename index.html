@@ -58,11 +58,11 @@
 
   .logo-area {
     text-align: center;
-    margin-bottom: 100px;
+    margin-bottom: 40px;
   }
 
   .logo-area img {
-    width: 200px;
+    width: 70px;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
   }
 
@@ -98,31 +98,18 @@
     margin-bottom: 25px;
   }
 
-  /* 🔵 ÁREA COM O FUNDO */
-  .dashboard-wrapper {
-    
-    padding: 40px;
-    border-radius: 20px;
-    overflow: hidden;
-  }
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(3, 2fr);
+  gap: 25px;
+}
+.grupo-titulo {
+  margin: 30px 0 15px;
+  font-size: 20px;
+  color: #0a0a0a6b;
+}
 
-  .dashboard-wrapper::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: url("img/image.webp") center/cover no-repeat;
-    opacity: 0.35;
-    filter: blur(1px);
-    z-index: -1;
-    border-radius: 20px;
-  }
 
-  /* 🔵 CARDS DO DASHBOARD */
-  .dashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-    gap: 25px;
-  }
 
   .card {
     background: #ffffff;
@@ -147,6 +134,7 @@
     margin-bottom: 12px;
     display: block;
     color: #0b587a;
+
     animation: flutuar 2.3s ease-in-out infinite;
   }
 
@@ -155,6 +143,20 @@
     50% { transform: translateY(-6px); }
     100% { transform: translateY(0px); }
   }
+
+  .menu-group {
+  margin-bottom: 25px;
+}
+
+.menu-title {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  color: rgba(255,255,255,0.6);
+  font-weight: bold;
+}
+
 
 </style>
 </head>
@@ -170,52 +172,102 @@
 <div class="sidebar">
 
   <div class="logo-area">
-    <img src="img/logo_motiva_og_2000.webp">
+    <img src="/img/logo_motiva_og_2000.webp">
   </div>
 
-  <div class="menu-item" onclick="window.open('linha9.html', '_blank')">
-    <i class="bi bi-train-front"></i> LINHA 9
+  <!-- 🔵 GRUPO LINHA 9 -->
+  <div class="menu-group">
+    <div class="menu-title">Grupo L9</div>
+
+    <div class="menu-item" onclick="window.open('linha9.html')">
+      <i class="bi bi-train-front"></i> LINHA 9
+    </div>
+
+    <div class="menu-item" onclick="window.open('vagbrr.html')">
+      <i class="bi bi-train-front"></i> VAG - BRR
+    </div>
+
+    <div class="menu-item" onclick="window.open('volosa.html')">
+      <i class="bi bi-train-front"></i> VOL - OSA
+    </div>
   </div>
 
-  <div class="menu-item" onclick="window.open('vagbrr.html', '_blank')">
-    <i class="bi bi-train-front"></i> VAG - BRR
-  </div>
+  <!-- 🔵 GRUPO LINHA 8 -->
+  <div class="menu-group">
+    <div class="menu-title">Grupo L8</div>
 
-  <div class="menu-item" onclick="window.open('volosa.html', '_blank')">
-    <i class="bi bi-train-front"></i> VOL - OSA
+    <div class="menu-item" onclick="window.open('linha10.html')">
+      <i class="bi bi-train-front"></i> LINHA 08
+    </div>
+
+    <div class="menu-item" onclick="window.open('vagabc.html')">
+      <i class="bi bi-train-front"></i> JPR - PAL
+    </div>
+
+    <div class="menu-item" onclick="window.open('volpin.html')">
+      <i class="bi bi-train-front"></i> OSA - IPV
+    </div>
   </div>
 
 </div>
+
+
+</div>
+
 
 <!-- 🔵 ÁREA PRINCIPAL -->
-<div class="content">
-  <h1>Centro de Controle Operacional</h1>
+<main class="content">
 
-  <!-- 🔵 ÁREA COM O FUNDO AO CENTRO -->
-  <div class="dashboard-wrapper">
+  <header class="content-header">
+    <h1>CCO</h1>
+  </header>
 
-      <div class="dashboard">
+  <h2 class="grupo-titulo">GRUPO LINHA 9</h2>
+  <section class="dashboard">
+    <button class="card" data-url="http://127.0.0.1:5500/linha9.html">
+      <i class="bi bi-train-front"></i>
+      <span>LINHA 9</span>
+    </button>
 
-        <div class="card" onclick="window.open('linha9.html', '_blank')">
-          <i class="bi bi-train-front"></i>
-          LINHA 9
-        </div>
+    <button class="card" data-url="vagbrr.html">
+      <i class="bi bi-train-front"></i>
+      <span>VAG - BRR</span>
+    </button>
 
-        <div class="card" onclick="window.open('vagbrr.html', '_blank')">
-          <i class="bi bi-train-front"></i>
-          VAG - BRR
-        </div>
+    <button class="card" data-url="volosa.html">
+      <i class="bi bi-train-front"></i>
+      <span>VOL - OSA</span>
+    </button>
+  </section>
 
-        <div class="card" onclick="window.open('volosa.html', '_blank')">
-          <i class="bi bi-train-front"></i>
-          VOL - OSA
-        </div>
+  <h2 class="grupo-titulo">GRUPO LINHA 8</h2>
+  <section class="dashboard">
+    <button class="card" data-url="linha10.html">
+      <i class="bi bi-train-front"></i>
+      <span>LINHA 8</span>
+    </button>
 
-      </div>
+    <button class="card" data-url="vagabc.html">
+      <i class="bi bi-train-front"></i>
+      <span>JPR - PAL</span>
+    </button>
+
+    <button class="card" data-url="volpin.html">
+      <i class="bi bi-train-front"></i>
+      <span>OSA - IPV</span>
+    </button>
+  </section>
+
+</main>
+
+
+  </section>
+</main>
+
 
   </div>
-
 </div>
+
 
 <script>
   // 🔵 Remove o loading depois de 1 segundo
@@ -224,6 +276,8 @@
       document.getElementById("loading").style.display = "none";
     }, 1000);
   };
+
+  
 </script>
 
 </body>
