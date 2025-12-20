@@ -261,18 +261,26 @@
 
 </main>
 
-<!-- 🔵 SCRIPT ADICIONADO -->
+<!-- 🔵 ESTILO (DICA EXTRA) -->
+<style>
+  .card {
+    cursor: pointer; /* melhora usabilidade */
+  }
+</style>
+
+<!-- 🔵 SCRIPT -->
 <script>
   document.querySelectorAll(".card").forEach(card => {
     card.addEventListener("click", () => {
-      const url = card.getAttribute("data-url");
+      const url = card.dataset.url;
       if (url) {
-        window.open(url, "_blank");
-
+        window.open(url, "_blank"); // ✅ abre em nova aba
       }
     });
   });
 </script>
+
+
 
 
 
@@ -293,3 +301,4 @@
 
 </body>
 </html>
+
