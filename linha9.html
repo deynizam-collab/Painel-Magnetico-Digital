@@ -524,12 +524,13 @@ function salvar() {
     });
   });
 
-  localStorage.setItem("ferrorama", JSON.stringify(dados));
+ sessionStorage.setItem("ferrorama", JSON.stringify(dados));
+
 }
 
 /* ------- CARREGAR -------- */
 function carregar() {
-  const dados = JSON.parse(localStorage.getItem("ferrorama"));
+  const dados = JSON.parse(sessionStorage.getItem("ferrorama"));
   if (!dados) return;
 
   dados.forEach(d => {
@@ -573,7 +574,7 @@ function limparTudo() {
     return;
   }
 
-  localStorage.removeItem("ferrorama");
+  sessionStorage.removeItem("ferrorama");
   document.querySelectorAll(".trem").forEach(t => t.remove());
   registrarEvento("Todos os trens foram removidos pelo operador");
 }
