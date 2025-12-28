@@ -306,7 +306,17 @@ trem.querySelector(".btn-excluir").addEventListener("click", e => {
 });
 
 
+ // 🔵 Definir posição inicial conforme a via
+if (viaEscolhida === 1) {
+  // VIA 1 → nasce pela direita
+  const larguraVia = via.clientWidth;
+  const larguraTrem = trem.offsetWidth || 90;
+  trem.style.left = (larguraVia - larguraTrem - 10) + "px";
+} else {
+  // VIA 2 → nasce pela esquerda
   trem.style.left = "10px";
+}
+
 
   via.appendChild(trem);
   ativarEventosTrem(trem);
@@ -571,3 +581,4 @@ carregar(); // inicializa
 
 </body>
 </html>
+
