@@ -322,7 +322,16 @@ trem.querySelector(".btn-excluir").addEventListener("click", e => {
 });
 
 
+ if (viaEscolhida === 1) {
+  // VIA 1 → nasce pela direita
+  const larguraVia = via.clientWidth;
+  const larguraTrem = 70; // largura do trem
+  trem.style.left = (larguraVia - larguraTrem - 10) + "px";
+} else {
+  // VIA 2 → nasce pela esquerda
   trem.style.left = "10px";
+}
+
 
   via.appendChild(trem);
   ativarEventosTrem(trem);
@@ -586,4 +595,5 @@ carregar(); // inicializa
 
 </body>
 </html>
+
 
